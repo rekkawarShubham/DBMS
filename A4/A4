@@ -1,0 +1,14 @@
+    1. select *  from Departments natural join professors;
+    2. select professors.prof_id,professors.prof_fname ,shift.shift from professors inner join shift on professors.prof_id=shift.prof_id  ;                         								
+    3. select Departments.dept_id,Departments.dept_name,professors.prof_fname from Departments left join  professors on Departments.dept_id=professors.dept_id ;				
+   
+    4. select Departments.dept_name,professors.prof_fname from Departments right join  professors on Departments.dept_id=professors.dept_id ;							
+   
+    5. select professors.prof_fname,Departments.dept_name,shift.shift,professors.salary from professors inner join Departments on professors.dept_id=Departments.dept_id inner join shift on professors.prof_id=shift.prof_id where professors.prof_id=401;					
+    
+    6. select Departments.dept_name,count(professors.prof_fname) from Departments inner join professors on Departments.dept_id=professors.dept_id group by professors.dept_id;		
+   
+    7.	select p.prof_id from professors p where p.dept_id in (select dept_id from Departments where dept_name = 'Computer' );																
+  
+    8.select d.dept_name from Departments d where d.dept_id in (select dept_id from professors where doj="2015-01-01");
+    9. create view view1 as select professors.prof_id,prof_fname,shift from professors left outer join shift on professors.prof_id=shift.prof_id;	

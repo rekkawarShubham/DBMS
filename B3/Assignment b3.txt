@@ -1,0 +1,117 @@
+Assignment b3
+
+
+
+
+ db.createCollection("student")
+{ "ok" : 1 }
+>  db.student.insert({Rollno:1,name:'Mayur',subject:'SEPM',marks:78});
+WriteResult({ "nInserted" : 1 })
+> db.student.insert({Rollno:2,name:'adesh',subject:'SEPM',marks:80});
+WriteResult({ "nInserted" : 1 })
+> db.student.insert({Rollno:3,name:'ajay',subject:'Toc',marks:95});
+WriteResult({ "nInserted" : 1 })
+> db.student.insert({Rollno:4,name:'Nilesh',subject:'Toc',marks:45});
+WriteResult({ "nInserted" : 1 })
+> db.student.find().pretty();
+{
+	"_id" : ObjectId("5bbcd4ad94b93e6f7c021698"),
+	"Rollno" : 1,
+	"name" : "Mayur",
+	"subject" : "SEPM",
+	"marks" : 78
+}
+{
+	"_id" : ObjectId("5bbcd4c094b93e6f7c021699"),
+	"Rollno" : 2,
+	"name" : "adesh",
+	"subject" : "SEPM",
+	"marks" : 80
+}
+{
+	"_id" : ObjectId("5bbcd4d994b93e6f7c02169a"),
+	"Rollno" : 3,
+	"name" : "ajay",
+	"subject" : "Toc",
+	"marks" : 95
+}
+{
+	"_id" : ObjectId("5bbcd4eb94b93e6f7c02169b"),
+	"Rollno" : 4,
+	"name" : "Nilesh",
+	"subject" : "Toc",
+	"marks" : 45
+}
+> db.student.aggregate([{$group : {_id : "$subject", marks : {$min : "$marks"}}}]);
+{ "_id" : "Toc", "marks" : 45 }
+{ "_id" : "SEPM", "marks" : 78 }
+> db.student.aggregate([{$group : {_id : "$subject", marks : {$max : "$marks"}}}]);
+{ "_id" : "Toc", "marks" : 95 }
+{ "_id" : "SEPM", "marks" : 80 }
+> db.student.aggregate([{$group : {_id : "$subject", marks : {$sum : "$marks"}}}]);
+{ "_id" : "Toc", "marks" : 140 }
+{ "_id" : "SEPM", "marks" : 158 }
+> db.student.aggregate([{$group : {_id : "$subject", marks : {$avg : "$marks"}}}]);
+{ "_id" : "Toc", "marks" : 70 }
+{ "_id" : "SEPM", "marks" : 79 }
+> db.student.ensureIndex({Rollno:1})
+{
+	"createdCollectionAutomatically" : false,
+	"numIndexesBefore" : 1,
+	"numIndexesAfter" : 2,
+	"ok" : 1
+}
+>  db.student.getIndexes();
+[
+	{
+		"v" : 2,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "test.student"
+	},
+	{
+		"v" : 2,
+		"key" : {
+			"Rollno" : 1
+		},
+		"name" : "Rollno_1",
+		"ns" : "test.student"
+	}
+]
+> db.student.find().min({Rollno:3});
+{ "_id" : ObjectId("5bbcd4d994b93e6f7c02169a"), "Rollno" : 3, "name" : "ajay", "subject" : "Toc", "marks" : 95 }
+{ "_id" : ObjectId("5bbcd4eb94b93e6f7c02169b"), "Rollno" : 4, "name" : "Nilesh", "subject" : "Toc", "marks" : 45 }
+> db.student.find().max({Rollno:3});
+{ "_id" : ObjectId("5bbcd4ad94b93e6f7c021698"), "Rollno" : 1, "name" : "Mayur", "subject" : "SEPM", "marks" : 78 }
+{ "_id" : ObjectId("5bbcd4c094b93e6f7c021699"), "Rollno" : 2, "name" : "adesh", "subject" : "SEPM", "marks" : 80 }
+> db.student.find().sort({Rollno:1}).pretty();
+{
+	"_id" : ObjectId("5bbcd4ad94b93e6f7c021698"),
+	"Rollno" : 1,
+	"name" : "Mayur",
+	"subject" : "SEPM",
+	"marks" : 78
+}
+{
+	"_id" : ObjectId("5bbcd4c094b93e6f7c021699"),
+	"Rollno" : 2,
+	"name" : "adesh",
+	"subject" : "SEPM",
+	"marks" : 80
+}
+{
+	"_id" : ObjectId("5bbcd4d994b93e6f7c02169a"),
+	"Rollno" : 3,
+	"name" : "ajay",
+	"subject" : "Toc",
+	"marks" : 95
+}
+{
+	"_id" : ObjectId("5bbcd4eb94b93e6f7c02169b"),
+	"Rollno" : 4,
+	"name" : "Nilesh",
+	"subject" : "Toc",
+	"marks" : 45
+}
